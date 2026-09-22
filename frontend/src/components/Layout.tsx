@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { Icon, type IconName } from './icons';
 import { useSettingsModal } from './SettingsModal';
 
@@ -14,19 +14,24 @@ const NAV: Array<{ to: string; label: string; icon: IconName }> = [
 
 export default function Layout({ children }: { children: ReactNode }) {
   const { openSettings } = useSettingsModal();
-  const [collapsed, setCollapsed] = useState(false);
+  // Persist the collapsed/expanded state across refreshes.
+  const [collapsed, setCollapsed] = useState(() => localStorage.getItem('ledgerly.sidebar.collapsed') === '1');
+
+  useEffect(() => {
+    localStorage.setItem('ledgerly.sidebar.collapsed', collapsed ? '1' : '0');
+  }, [collapsed]);
 
   return (
     <div className="shell">
       <aside className={`sidebar ${collapsed ? 'rail' : ''}`}>
         <NavLink to="/" className="brand">
           <span className="brand-mark">$</span>
+          <button type="button" className="collapse-btn" onClick={(e) => { e.preventDefault(); setCollapsed((v) => !v); }} aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}>
+            <Icon name="collapse" size={18} />
+            <span>{collapsed ? 'Expand' : 'Collapse'}</span>
+          </button>
           <span className="brand-name">ledgerly</span>
         </NavLink>
-        <button type="button" className="collapse-btn" onClick={() => setCollapsed((v) => !v)} aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}>
-          <Icon name="collapse" size={18} />
-          <span>Collapse</span>
-        </button>
 
         <nav className="side-nav" aria-label="Primary">
           {NAV.map((item) => (

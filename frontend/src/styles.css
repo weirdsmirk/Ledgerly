@@ -101,7 +101,7 @@ input[type='number']::-webkit-inner-spin-button { opacity: 0.3; }
   top: 0;
   height: 100vh;
 }
-.brand { display: flex; align-items: center; gap: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; }
 .brand:hover { text-decoration: none; }
 .brand-mark {
   width: 40px; height: 40px;
@@ -113,13 +113,20 @@ input[type='number']::-webkit-inner-spin-button { opacity: 0.3; }
 }
 .brand-name { color: #fff; font-size: 24px; font-weight: 600; letter-spacing: -0.02em; }
 .collapse-btn {
-  margin: 26px 0 0 auto;
   display: inline-flex; align-items: center; gap: 8px;
   background: none; border: none; cursor: pointer;
   color: var(--forest-dim); font-size: 13px; font-weight: 500;
   padding: 6px 8px; border-radius: 8px;
+  margin-left: auto;
+  opacity: 0;
+  transition: opacity 0.15s ease, color 0.15s ease, background 0.15s ease;
 }
+.brand:hover .collapse-btn { opacity: 1; }
 .collapse-btn:hover { color: #fff; background: var(--forest-2); }
+
+.sidebar.rail .brand { flex-direction: column; align-items: center; gap: 8px; }
+.sidebar.rail .brand-name { display: none; }
+.sidebar.rail .collapse-btn { margin-left: 0; opacity: 1; }
 .side-label {
   font-size: 11.5px; font-weight: 600;
   letter-spacing: 0.14em;
@@ -679,7 +686,12 @@ select.input {
 .confirm-text { color: var(--ink2); }
 
 /* Settings modal rows */
-.set-row { display: flex; align-items: center; gap: 14px; padding: 18px 0; border-bottom: 1px solid var(--border-soft); }
+.set-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 2px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.danger-title { color: #b3453c; }
 .set-row:last-of-type { border-bottom: none; }
 .set-main { flex: 1; min-width: 0; }
 .set-title { font-weight: 600; font-size: 15px; }
