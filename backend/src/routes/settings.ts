@@ -60,3 +60,30 @@ settingsRouter.put('/', (req: Request, res: Response) => {
 
   res.json(next);
 });
+
+/* DELETE /api/settings/data - permanently erase all financial data.
+   Removes transactions, recurring rules/overrides, budgets and goals.
+   Accounts, categories and preferences are preserved so the app stays usable. */
+settingsRouter.delete('/data', (_req: Request, res: Response) => {
+  const userId = getUser();
+  const wiped: Record<string, number> = {};
+  const del = (label: string, sql: string, ...params: (string | number)[]) => {
+    wiped[label] = Number(db.prepare(sql).run(...params).changes);
+  };
+
+  db.exec('BEGIN');
+  try {
+    // Children first to satisfy foreign keys.
+    del('recurring_overrides', 'DELETE FROM recurring_overrides WHERE transaction_id IN (SELECT id FROM transactions WHERE user_id = ?)', userId);
+    del('transactions', 'DELETE FROM transactions WHERE user_id = ?', userId);
+    del('budgets', 'DELETE FROM budgets WHERE user_id = ?', userId);
+    del('goals', 'DELETE FROM goals WHERE user_id = ?', userId);
+    del('accounts', 'DELETE FROM accounts WHERE user_id = ?', userId);
+    db.exec('COMMIT');
+  } catch (err) {
+    db.exec('ROLLBACK');
+    throw err;
+  }
+
+  res.json({ message: 'All data erased', wiped });
+});

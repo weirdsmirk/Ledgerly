@@ -21,6 +21,7 @@ export type IconName =
   | 'trend-up'
   | 'trend-down'
   | 'collapse'
+  | 'expand'
   | 'filter'
   | 'calendar'
   | 'repeat'
@@ -130,6 +131,18 @@ const PATHS: Record<IconName, ReactNode> = {
     <>
       <rect x="3.5" y="4" width="17" height="16" rx="2" />
       <path d="M9.5 4v16M14.5 10.5 12 13l2.5 2.5" />
+    </>
+  ),
+  expand: (
+    <>
+      <rect x="3.5" y="4" width="17" height="16" rx="2" />
+      <path d="M9.5 4v16M14.5 10.5 17 13l-2.5 2.5" />
+    </>
+  ),
+  expand: (
+    <>
+      <rect x="3.5" y="4" width="17" height="16" rx="2" />
+      <path d="M9.5 4v16M12 10.5l2.5 2.5L12 15.5" />
     </>
   ),
   filter: (

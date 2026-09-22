@@ -40,25 +40,48 @@ function TxFormModal({ open, editingId, onClose, onSaved }: {
   const [status, setStatus] = useState<'cleared' | 'pending'>('cleared');
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [accFormOpen, setAccFormOpen] = useState(false);
+  const [accName, setAccName] = useState('');
+  const [accType, setAccType] = useState('checking');
+  const [accError, setAccError] = useState<string | null>(null);
 
   const accounts = useAsync(() => api.getAccounts(), []);
   const categories = useAsync(() => api.getCategories(), []);
   const goals = useAsync(() => api.getGoals(false), []);
+  const accountsLoaded = accounts.data !== null;
+  const noAccounts = accountsLoaded && accounts.data!.length === 0;
   const existing = useAsync(
     () => (editingId !== null && open ? api.getTransaction(editingId) : Promise.resolve(null)),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [editingId, open]
   );
 
+  // Re-fetch accounts/categories every time the modal opens, so anything
+  // created elsewhere (or in this modal) shows up immediately.
+  useEffect(() => {
+    if (!open) return;
+    accounts.reload();
+    categories.reload();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
   useEffect(() => {
     if (!open) return;
     setError(null);
     if (editingId === null) {
-      setAccountId(''); setCategoryId(''); setGoalId(''); setAmount('');
+      setGoalId(''); setAmount('');
       setDescription(''); setDate(todayKey()); setType('expense');
       setIsRecurring(false); setPattern('monthly'); setStatus('cleared');
-    }
+   }
   }, [open, editingId]);
+
+  // Sensible defaults: preselect the first account/category once lists arrive,
+  // without ever clobbering a choice the user already made.
+  useEffect(() => {
+    if (!open || editingId !== null) return;
+    setAccountId((v) => v || String(accounts.data?.[0]?.id ?? ''));
+    setCategoryId((v) => v || String(categories.data?.filter((c) => c.is_active)[0]?.id ?? ''));
+  }, [open, editingId, accounts.data, categories.data]);
 
   useEffect(() => {
     const t: Transaction | null | undefined = existing.data;

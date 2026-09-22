@@ -15,13 +15,22 @@ import type {
   UpcomingOccurrence,
 } from './types';
 
-const BASE = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:8734/api' : '/api');
+// Relative by default: in dev, Vite proxies /api to the backend (see
+// vite.config.ts); in production the backend itself serves the frontend.
+// Override with VITE_API_URL if the API lives elsewhere.
+const BASE = import.meta.env.VITE_API_URL || '/api';
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(`${BASE}${path}`, {
-    headers: { 'Content-Type': 'application/json' },
-    ...init,
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${BASE}${path}`, {
+      headers: { 'Content-Type': 'application/json' },
+      ...init,
+    });
+  } catch {
+    // Network-level failure (backend down, port closed, CORS, ...).
+    throw new Error('Cannot reach the server — make sure the backend is running');
+  }
   if (!res.ok) {
     let message = `Request failed (${res.status})`;
     try {
@@ -142,6 +151,8 @@ const api = {
   getSettings: () => request<AppSettings>('/settings'),
   updateSettings: (data: Partial<AppSettings>) =>
     request<AppSettings>('/settings', { method: 'PUT', body: JSON.stringify(data) }),
+  eraseAllData: () =>
+    request<{ message: string; wiped: Record<string, number> }>('/settings/data', { method: 'DELETE' }),
 };
 
 export default api;

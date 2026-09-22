@@ -26,12 +26,12 @@ export default function Layout({ children }: { children: ReactNode }) {
       <aside className={`sidebar ${collapsed ? 'rail' : ''}`}>
         <NavLink to="/" className="brand">
           <span className="brand-mark">$</span>
-          <button type="button" className="collapse-btn" onClick={(e) => { e.preventDefault(); setCollapsed((v) => !v); }} aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}>
-            <Icon name="collapse" size={18} />
-            <span>{collapsed ? 'Expand' : 'Collapse'}</span>
-          </button>
           <span className="brand-name">ledgerly</span>
         </NavLink>
+        <button type="button" className="collapse-btn" onClick={() => setCollapsed((v) => !v)} aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}>
+          <Icon name="collapse" size={18} />
+          <span>{collapsed ? 'Expand' : 'Collapse'}</span>
+        </button>
 
         <nav className="side-nav" aria-label="Primary">
           {NAV.map((item) => (

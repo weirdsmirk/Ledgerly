@@ -15,24 +15,40 @@ export const useSettingsModal = () => useContext(SettingsCtx);
 const ICON_CHOICES = ['🏠', '🍔', '🚗', '💡', '🎬', '🏥', '🛍️', '💰', '💵', '📁', '✈️', '🎓', '🐶', '🎮', '📚', '💼', '🎁', '🧾'];
 const COLOR_CHOICES = ['#3f8f63', '#dd9f2e', '#6d9dc5', '#7d6bc4', '#c05b52', '#d4699e', '#4fb3a9', '#8a8f98'];
 
+/* Used when settings haven't loaded yet, so the form is always editable. */
+const DEFAULT_PREFS: AppSettings = {
+  user_id: 0,
+  currency: 'USD',
+  display_name: 'Jordan Davis',
+  workspace_name: 'Personal finances',
+};
+
 export function SettingsModalProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const openSettings = useCallback(() => setOpen(true), []);
   const settings = useAsync<AppSettings>(() => api.getSettings(), []);
+  const { reload: reloadSettings } = settings;
 
   // Apply the saved currency symbol as soon as settings are available.
   useEffect(() => {
     if (settings.data) setCurrencySymbol(currencySymbolFor(settings.data.currency));
   }, [settings.data]);
 
+  // If the settings fetch failed (API briefly unavailable, stale server, ...),
+  // retry whenever the user opens the modal so the form is never stuck.
+  useEffect(() => {
+    if (open && !settings.data && !settings.loading) reloadSettings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
   const saveSettings = useCallback(
     async (data: Partial<AppSettings>) => {
       const updated = await api.updateSettings(data);
       setCurrencySymbol(currencySymbolFor(updated.currency));
-      await settings.reload();
+      await reloadSettings();
       return updated;
     },
-    [settings]
+    [reloadSettings]
   );
 
   return (
@@ -54,12 +70,17 @@ function SettingsModal({ open, onClose }: { open: boolean; onClose: () => void }
   const [prefs, setPrefs] = useState<AppSettings | null>(null);
   const [prefsError, setPrefsError] = useState<string | null>(null);
   const [savingPrefs, setSavingPrefs] = useState(false);
+  const [wipeOpen, setWipeOpen] = useState(false);
+  const [wipeConfirm, setWipeConfirm] = useState('');
+  const [wiping, setWiping] = useState(false);
 
   // Load the current values into the form whenever the modal is opened.
+  // Falls back to defaults so the form stays editable even if the settings
+  // fetch failed — otherwise the inputs would silently ignore typing.
   useEffect(() => {
     if (open) {
       setPrefsError(null);
-      setPrefs(settings ? { ...settings } : null);
+      setPrefs(settings ? { ...settings } : { ...DEFAULT_PREFS });
     }
   }, [open, settings]);
 
@@ -118,6 +139,19 @@ function SettingsModal({ open, onClose }: { open: boolean; onClose: () => void }
       setPrefsError(err instanceof Error ? err.message : 'Save failed');
     } finally {
       setSavingPrefs(false);
+    }
+  };
+
+  const eraseAllData = async () => {
+    if (wipeConfirm !== 'ERASE') return;
+    setWiping(true);
+    try {
+      await api.eraseAllData();
+      // Full reload so every page refetches its now-empty data.
+      window.location.reload();
+    } catch (err) {
+      toasts.push(err instanceof Error ? err.message : 'Erase failed', 'err');
+      setWiping(false);
     }
   };
 
@@ -199,6 +233,15 @@ function SettingsModal({ open, onClose }: { open: boolean; onClose: () => void }
             </div>
           ))}
         </div>
+        <div className="set-row">
+          <div className="set-main">
+            <div className="set-title danger-title">Erase all data</div>
+            <div className="set-sub">Permanently deletes every transaction, account, budget and goal. Categories and preferences are kept.</div>
+          </div>
+          <button className="btn btn-danger-ghost btn-xs" onClick={() => { setWipeConfirm(''); setWipeOpen(true); }}>
+            Erase data…
+          </button>
+        </div>
         <div className="modal-actions" style={{ justifyContent: 'flex-start' }}>
           <Button variant="outline" onClick={() => { setCatError(null); setCatOpen(true); }}>New category</Button>
           <span style={{ flex: 1 }} />
@@ -234,6 +277,26 @@ function SettingsModal({ open, onClose }: { open: boolean; onClose: () => void }
         <div className="modal-actions">
           <Button variant="outline" onClick={() => setConfirmDelete(null)}>Cancel</Button>
           <Button variant="danger" onClick={doDelete}>Delete</Button>
+        </div>
+      </Modal>
+
+      <Modal open={wipeOpen} onClose={() => setWipeOpen(false)} title="Erase all data?">
+        <p className="confirm-text">
+          Every transaction, account, budget and goal will be permanently deleted from the local database.
+          Categories and your preferences are kept. This cannot be undone.
+        </p>
+        <TextInput
+          label='Type "ERASE" to confirm'
+          placeholder="ERASE"
+          value={wipeConfirm}
+          onChange={(e) => setWipeConfirm(e.target.value)}
+          autoFocus
+        />
+        <div className="modal-actions">
+          <Button variant="outline" onClick={() => setWipeOpen(false)}>Cancel</Button>
+          <Button variant="danger" disabled={wipeConfirm !== 'ERASE' || wiping} onClick={eraseAllData}>
+            {wiping ? 'Erasing…' : 'Erase everything'}
+          </Button>
         </div>
       </Modal>
     </>

@@ -22,11 +22,15 @@ const dom = new JSDOM(html, {
 const { window } = dom;
 const apiBase = process.argv[2] || 'http://localhost:8734/api';
 
-// Route fetch from the bundle to the real backend (rewrite API origin).
-// Match any localhost:port /api base so the test works regardless of the
-// port baked into the bundle.
+// Route fetch from the bundle to the real backend. The bundle uses a relative
+// '/api' base (Vite dev proxies it), so prefix relative paths with the API base.
 window.fetch = (url, opts) => {
-  const target = String(url).replace(/http:\/\/localhost:\d+\/api/, apiBase);
+  let target = String(url);
+  if (target.startsWith('/api')) {
+    target = apiBase + target.slice(4);
+  } else {
+    target = target.replace(/http:\/\/localhost:\d+\/api/, apiBase);
+  }
   return fetch(target, opts);
 };
 
