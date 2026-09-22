@@ -416,7 +416,7 @@ select.input {
 .tx-name { font-weight: 600; font-size: 14.5px; }
 .tx-cat { display: flex; align-items: center; gap: 7px; color: var(--ink3); font-size: 12.5px; margin-top: 3px; }
 .tx-cat .dot-swatch { width: 8px; height: 8px; }
-.tx-date, .tx-acct { color: var(--ink2); font-size: 14px; }
+.tx-date, .tx-acct { color: var(--ink2); font-size: 14px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
 .amt { font-weight: 600; font-variant-numeric: tabular-nums; font-size: 15px; }
 .amt.pos { color: var(--accent-deep); }
 .row-actions { display: flex; gap: 2px; justify-content: flex-end; }
