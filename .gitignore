@@ -5,12 +5,6 @@ node_modules/
 dist/
 *.tsbuildinfo
 
-# Local database (contains your real financial data — never commit)
-backend/app.db
-backend/app.db-*
-backend/*.db
-backend/*.db-*
-
 # Environment files (local overrides, e.g. PORT / DB_PATH / VITE_API_URL)
 .env
 .env.local
