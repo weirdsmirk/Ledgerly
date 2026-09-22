@@ -20,7 +20,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     <div className="shell">
       <aside className={`sidebar ${collapsed ? 'rail' : ''}`}>
         <NavLink to="/" className="brand">
-          <span className="brand-mark">L</span>
+          <span className="brand-mark">$</span>
           <span className="brand-name">ledgerly</span>
         </NavLink>
         <button type="button" className="collapse-btn" onClick={() => setCollapsed((v) => !v)} aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}>
