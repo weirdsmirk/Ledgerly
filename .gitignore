@@ -25,3 +25,7 @@ npm-debug.log*
 # Editor / tooling
 .vscode/
 .idea/
+
+# Local tooling (skills, design docs — not for repo)
+.opencode/
+.impeccable/
