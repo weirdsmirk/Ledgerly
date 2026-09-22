@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-22T00:00:00.000Z",
+  "title": "Design System: Ledger",
+  "extensions": {
+    "colorMeta": {
+      "primary": { "role": "primary", "displayName": "Ultramarine Ink", "canonical": "oklch(44.5% 0.16 265)", "tonalRamp": ["#182034", "#233362", "#30488d", "#3257c3", "#5f7cce", "#91a2d4", "#bec7df", "#e6e8ef"] },
+      "primary-deep": { "role": "primary", "displayName": "Ultramarine Deep", "canonical": "oklch(39% 0.15 265)", "tonalRamp": ["#10162b", "#1a2247", "#253061", "#31407e", "#40509c", "#6b78bd", "#a1aadb", "#d9def0"] },
+      "primary-soft": { "role": "primary", "displayName": "Ultramarine Wash", "canonical": "oklch(93% 0.02 265)", "tonalRamp": ["#2e3a54", "#55607c", "#7a84a0", "#9ba3bc", "#b6bdd0", "#cdd2e0", "#e2e5f0", "#f2f4fa"] },
+      "paper": { "role": "neutral", "displayName": "Cool Paper", "canonical": "oklch(96.5% 0.005 100)", "tonalRamp": ["#2a2a23", "#4a4a3b", "#6c6c51", "#8f8f66", "#a6a687", "#bcbca9", "#d3d3ca", "#ecece9"] },
+      "sheet": { "role": "neutral", "displayName": "Statement Sheet", "canonical": "oklch(100% 0 0)", "tonalRamp": ["#2b2b2b", "#4d4d4d", "#707070", "#949494", "#b5b5b5", "#d0d0d0", "#e5e5e5", "#f5f5f5"] },
+      "sheet-sunken": { "role": "neutral", "displayName": "Sunken Sheet", "canonical": "oklch(98% 0.003 100)", "tonalRamp": ["#2b2b28", "#4d4d49", "#71716b", "#94948d", "#b4b4ad", "#cfcfc8", "#e4e4de", "#f4f4f0"] },
+      "rail": { "role": "neutral", "displayName": "Rail Paper", "canonical": "oklch(95.5% 0.004 100)", "tonalRamp": ["#2a2a26", "#4b4b3f", "#6c6c5c", "#8f8f7c", "#a5a596", "#bcbcb0", "#d3d3cb", "#ebebe6"] },
+      "ink": { "role": "neutral", "displayName": "Register Ink", "canonical": "oklch(24% 0.015 260)", "tonalRamp": ["#242628", "#3e4147", "#575c66", "#6e7686", "#8d93a0", "#adb1b8", "#ccced1", "#eaeaeb"] },
+      "ink-muted": { "role": "neutral", "displayName": "Faint Ink", "canonical": "oklch(40% 0.012 260)", "tonalRamp": ["#202327", "#363a3f", "#4c5057", "#63686f", "#7d8289", "#9ba0a6", "#c0c3c7", "#e6e7ea"] },
+      "ink-dim": { "role": "neutral", "displayName": "Dim Ink", "canonical": "oklch(50% 0.01 260)", "tonalRamp": ["#24272c", "#3b3f46", "#52565e", "#6a6d74", "#868a92", "#a6aab1", "#cbcdd2", "#ececef"] },
+      "green-ledger": { "role": "tertiary", "displayName": "Achieved Green", "canonical": "oklch(50% 0.09 155)", "tonalRamp": ["#1e2f24", "#2f563e", "#427b57", "#4ea76f", "#74b88e", "#9ec7ad", "#c5d9cc", "#e8eeea"] },
+      "red-ledger": { "role": "tertiary", "displayName": "Over Red", "canonical": "oklch(49% 0.16 25)", "tonalRamp": ["#35181a", "#632125", "#99242b", "#c62f39", "#d05d64", "#d59094", "#e0bec0", "#f0e6e6"] },
+      "amber-ledger": { "role": "tertiary", "displayName": "At-Risk Amber", "canonical": "oklch(57% 0.13 80)", "tonalRamp": ["#3c2f11", "#735611", "#a67b16", "#eaa70b", "#ecb841", "#e6c77f", "#e8d9b5", "#f2eee3"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Page titles only; one line at 30px." },
+      "headline": { "displayName": "Headline", "purpose": "Form and modal titles." },
+      "title": { "displayName": "Title", "purpose": "Card heads and section heads." },
+      "body": { "displayName": "Body", "purpose": "Default UI text; keep lines under 72ch." },
+      "label": { "displayName": "Label", "purpose": "Field labels, kickers, table column heads." },
+      "data": { "displayName": "Data", "purpose": "All money figures, balances, percentages; always with +/− sign." }
+    },
+    "shadows": [
+      { "name": "statement-shelf", "value": "0 1px 2px rgba(21,24,30,0.05), 0 14px 34px -22px rgba(21,24,30,0.25)", "purpose": "The only shadow. Sheets, modals, drawers, toasts — a statement lying on a desk." }
+    ],
+    "motion": [
+      { "name": "count-up", "value": "950ms cubic-bezier(0.16,1,0.3,1), one authored motion on dashboard Net", "purpose": "The hero figure counts up on load; the rule inks in at 0.7s. Disabled under prefers-reduced-motion." },
+      { "name": "ease-state", "value": "0.12-0.15s ease", "purpose": "Hover, focus, and active transitions on buttons, rows, nav items." }
+    ],
+    "breakpoints": [
+      { "name": "mobile", "value": "640px", "purpose": "Compact hero, stacked mast, single-column forms." },
+      { "name": "tab", "value": "960px", "purpose": "Rail hides; bottom tabbar + More drawer take over navigation." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "One action per view: Record, Save, Import.",
+      "html": "<button class=\"ds-btn-primary\">Record</button>",
+      "css": ".ds-btn-primary { background: #21409A; color: #fff; border: 1px solid #172E7A; border-radius: 2px; padding: 8px 15px; font: 600 13.5px 'Schibsted Grotesk', sans-serif; line-height: 1.25; cursor: pointer; transition: background 0.15s ease, transform 0.05s ease; } .ds-btn-primary:hover { background: #172E7A; } .ds-btn-primary:active { transform: translateY(1px); } .ds-btn-primary:focus-visible { outline: 2px solid #21409A; outline-offset: 2px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary actions; hairline-mid boundary, ink text.",
+      "html": "<button class=\"ds-btn-ghost\">Export CSV</button>",
+      "css": ".ds-btn-ghost { background: transparent; color: #4C4F57; border: 1px solid #CECDC4; border-radius: 2px; padding: 8px 15px; font: 600 13.5px 'Schibsted Grotesk', sans-serif; cursor: pointer; transition: border-color 0.15s ease, color 0.15s ease; } .ds-btn-ghost:hover { border-color: #6A6D74; color: #191B1F; } .ds-btn-ghost:focus-visible { outline: 2px solid #21409A; outline-offset: 2px; }"
+    },
+    {
+      "name": "Danger Button",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Destructive action: delete a transaction, clear a category.",
+      "html": "<button class=\"ds-btn-danger\">Delete</button>",
+      "css": ".ds-btn-danger { background: #B4232C; color: #fff; border: 1px solid #8F1A21; border-radius: 2px; padding: 8px 15px; font: 600 13.5px 'Schibsted Grotesk', sans-serif; cursor: pointer; transition: background 0.15s ease; } .ds-btn-danger:hover { background: #99242B; } .ds-btn-danger:focus-visible { outline: 2px solid #B4232C; outline-offset: 2px; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Fields with a strong-line boundary and an ultramarine focus ring.",
+      "html": "<input class=\"ds-input\" placeholder=\"e.g. Groceries — Tesco\" />",
+      "css": ".ds-input { width: 100%; background: #fff; color: #191B1F; border: 1px solid #94938A; border-radius: 2px; padding: 9px 12px; font: 400 14px 'Schibsted Grotesk', sans-serif; transition: border-color 0.15s ease, box-shadow 0.15s ease; } .ds-input::placeholder { color: #6A6D74; } .ds-input:focus { outline: none; border-color: #21409A; box-shadow: 0 0 0 3px rgba(33, 64, 154, 0.28); }"
+    },
+    {
+      "name": "Rail Nav Item (active)",
+      "kind": "nav",
+      "refersTo": "nav-item-active",
+      "description": "Active desktop index item: white sheet fill, ultramarine text, 3px left rule.",
+      "html": "<div class=\"ds-nav\"><a class=\"ds-nav-item ds-nav-active\" href=\"#\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\"><rect x=\"3\" y=\"2.5\" width=\"12\" height=\"13\" rx=\"1\" stroke=\"currentColor\" stroke-width=\"1.5\"/><path d=\"M3 6h12M6.5 10h5\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg>Transactions</a><a class=\"ds-nav-item\" href=\"#\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\"><path d=\"M3 15V9M9 15V4M15 15V7\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"/></svg>Budgets</a></div>",
+      "css": ".ds-nav { display: flex; flex-direction: column; gap: 2px; } .ds-nav-item { display: flex; align-items: center; gap: 11px; padding: 8px 12px; border-left: 3px solid transparent; border-radius: 2px; color: #4C4F57; font: 550 14px 'Schibsted Grotesk', sans-serif; text-decoration: none; } .ds-nav-item:hover { background: #fff; color: #191B1F; } .ds-nav-active { background: #fff; color: #21409A; border-left-color: #21409A; font-weight: 600; }"
+    },
+    {
+      "name": "Statement Sheet",
+      "kind": "card",
+      "refersTo": "card-sheet",
+      "description": "The only surface: white sheet, hairline border, statement-shelf shadow.",
+      "html": "<div class=\"ds-sheet\"><strong class=\"ds-sheet-head\">Where it went</strong><div cap=\"spacer\"></div><p class=\"ds-sheet-line\">Groceries <b>−$412.00</b></p><p class=\"ds-sheet-line\">Rent <b>−$1,200.00</b></p></div>",
+      "css": ".ds-sheet { background: #fff; border: 1px solid #E3E2DC; border-radius: 2px; box-shadow: 0 1px 2px rgba(21,24,30,0.05), 0 14px 34px -22px rgba(21,24,30,0.25); padding: 22px 24px; display: flex; flex-direction: column; gap: 9px; } .ds-sheet-head { font: 600 15px 'Schibsted Grotesk', sans-serif; color: #191B1F; margin-bottom: 5px; } .ds-sheet-line { margin: 0; font: 400 14px 'Schibsted Grotesk', sans-serif; color: #4C4F57; display: flex; justify-content: space-between; border-bottom: 1px dashed #E3E2DC; padding-bottom: 7px; } .ds-sheet-line b { font: 600 13.5px 'Fragment Mono', monospace; font-variant-numeric: tabular-nums; color: #191B1F; }"
+    },
+    {
+      "name": "Category Chip",
+      "kind": "chip",
+      "refersTo": "category-chip",
+      "description": "Transaction category: icon + name, tinted with the category color.",
+      "html": "<span class=\"ds-chip\"><span class=\"ds-chip-dot\" style=\"background:#21409A\"></span> Groceries</span>",
+      "css": ".ds-chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border: 1px solid rgba(25,27,31,0.1); border-radius: 2px; background: rgba(33,64,154,0.10); color: #21409A; font: 550 12.5px 'Schibsted Grotesk', sans-serif; white-space: nowrap; } .ds-chip-dot { width: 8px; height: 8px; border-radius: 1px; background: #21409A; }"
+    },
+    {
+      "name": "Status Mark",
+      "kind": "custom",
+      "refersTo": "status-mark-cleared",
+      "description": "Signature: cleared = filled ink dot, pending = hollow amber-ringed dot.",
+      "html": "<span class=\"ds-marks\"><span class=\"ds-mark ds-mark-clr\" title=\"Cleared\"></span><span class=\"ds-mark ds-mark-pnd\" title=\"Pending\"></span></span>",
+      "css": ".ds-marks { display: flex; gap: 10px; } .ds-mark { display: inline-block; width: 10px; height: 10px; border-radius: 50%; } .ds-mark-clr { background: #191B1F; } .ds-mark-pnd { background: transparent; border: 1.5px solid #8F6400; } .ds-mark-pnd::after { content: ''; position: absolute; }"
+    },
+    {
+      "name": "Tabbar Item (mobile)",
+      "kind": "nav",
+      "refersTo": "nav-item",
+      "description": "Bottom thumb tab: labeled icon, active in ultramarine.",
+      "html": "<div class=\"ds-tabbar\"><a class=\"ds-tab\" href=\"#\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\"><rect x=\"3\" y=\"2.5\" width=\"12\" height=\"13\" rx=\"1\" stroke=\"currentColor\" stroke-width=\"1.5\"/><path d=\"M3 6h12\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg>Register</a><a class=\"ds-tab ds-tab-on\" href=\"#\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\"><path d=\"M3 15V9M9 15V4M15 15V7\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"/></svg>Budgets</a></div>",
+      "css": ".ds-tabbar { display: flex; background: #fff; border-top: 1px solid #CECDC4; padding: 6px 8px; gap: 4px; } .ds-tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 7px 4px 6px; color: #6A6D74; font: 600 10.5px 'Schibsted Grotesk', sans-serif; text-decoration: none; border-radius: 2px; } .ds-tab:hover { color: #191B1F; } .ds-tab-on { color: #21409A; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Printed Register",
+    "overview": "Ledger behaves like a physical statement and kept register: cool chalk-paper ground, near-black ink, hairline rules instead of floating cards. Content sits on flat white statement sheets with 2px corners and a hairline border, arranged on a paper-colored page. Nothing floats; nothing stacks; there is exactly one level of surface. Money is treated as a measured thing, not an ornament: every amount, balance, and percentage is set in Fragment Mono with tabular figures and an explicit + or − sign, the way a ledger does arithmetic by hand. The UI voice is Schibsted Grotesk — a utilitarian grotesque that looks typeset and calm. Color is spent on one ultramarine accent and on state. Most of the screen is paper, ink text, and hairlines; income and expense amounts are not painted green and red, they share the ink and differ only by sign, while deep green, deep red, and amber are reserved for state: achieved, over budget, at risk.",
+    "keyCharacteristics": [
+      "One level of surface: sheets on paper, hairline rules, no nested cards or raised panels.",
+      "Money always in mono with a +/− sign; UI text in a grotesque.",
+      "One ultramarine accent on a small share of any screen; dark ink everywhere else.",
+      "Sharp corners everywhere (2px radius); no pills, gradients, glow, or glass.",
+      "A register that behaves like a statement: date-sorted, running balance, cleared/pending dots."
+    ],
+    "rules": [
+      { "name": "The One Ink Rule", "body": "Only ultramarine (#21409A) may act as an accent for action, link, focus, or active state — never a second brand color, never a gradient.", "section": "colors" },
+      { "name": "The State-Only Color Rule", "body": "Green, red, and amber appear only as state (achieved, over, pending/at-risk). Income and expense amounts are ink-colored and sign-marked, not green and red.", "section": "colors" },
+      { "name": "The Measured Figure Rule", "body": "Every amount, balance, and percentage renders in Fragment Mono with tabular numbers and an explicit +/− prefix. Proportional type never sets a number that represents money.", "section": "typography" },
+      { "name": "The Single Level Rule", "body": "Exactly one level of surface exists. A sheet may never sit on another sheet; no nested cards, no raised panels, no stacked shadows.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do set every amount, balance, and percentage in Fragment Mono with a +/− sign and tabular numbers.",
+      "Do keep sheets flat on paper with hairline borders (1px #E3E2DC) and 2px corners.",
+      "Do reserve ultramarine for action/link/focus/active and let it stay scarce.",
+      "Do use filled ink dots for cleared and hollow amber dots for pending transactions.",
+      "Do let tables scroll horizontally inside their sheet on mobile rather than breaking the page.",
+      "Do scope motion to the one hero count/rule and disable it under reduced-motion."
+    ],
+    "donts": [
+      "Don't add gradients, glow, glass, blurry cards, or pill-shaped anything.",
+      "Don't paint income green and expenses red — sign them +/− in ink, and use color only as state.",
+      "Don't use money green/red palettes, rounded SaaS cards, or blue pill CTAs that say finance app.",
+      "Don't set numbers in the proportional UI font.",
+      "Don't nest cards or stack surfaces above one level.",
+      "Don't use all-caps labels, middle-dot key-value strings, or → link tails.",
+      "Don't use playful copy, exclamation marks, or marketing fluff — plain sentence-case verbs."
+    ]
+  }
+}
