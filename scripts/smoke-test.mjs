@@ -10,7 +10,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const distDir = path.resolve(__dirname, '..', 'dist');
+const distDir = path.resolve(__dirname, '..', 'dist', 'client');
 const html = readFileSync(path.join(distDir, 'index.html'), 'utf8');
 
 const dom = new JSDOM(html, {

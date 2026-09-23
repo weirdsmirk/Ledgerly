@@ -578,6 +578,16 @@ select.input {
 .form .field { margin-bottom: 15px; }
 .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .form-grid-2 .field { margin-bottom: 15px; }
+.acc-inline-toggle { display: flex; justify-content: flex-end; margin: -9px 0 4px; }
+.acc-inline {
+  border: 1px dashed var(--border);
+  background: var(--accent-softer);
+  border-radius: 12px;
+  padding: 14px 14px 6px;
+  margin: -4px 0 16px;
+}
+.acc-inline .field { margin-bottom: 12px; }
+.acc-inline .modal-actions { margin-top: 10px; }
 
 .type-switch {
   display: flex; gap: 6px;

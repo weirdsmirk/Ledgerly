@@ -10,6 +10,7 @@ import { budgetsRouter } from './routes/budgets';
 import { goalsRouter } from './routes/goals';
 import { analyticsRouter } from './routes/analytics';
 import { settingsRouter } from './routes/settings';
+import { DB_PATH, PROJECT_ROOT } from './db';
 
 const app = express();
 const PORT = Number(process.env.PORT) || 8734;
@@ -29,12 +30,12 @@ app.get('/api/health', (_req: Request, res: Response) => {
   res.json({ status: 'ok', time: new Date().toISOString() });
 });
 
-// Serve the built frontend when it exists (production mode).
-const distPath = path.join(__dirname, '..', '..', 'frontend', 'dist');
-if (fs.existsSync(distPath)) {
-  app.use(express.static(distPath));
+// Serve the built client when it exists (production mode).
+const clientDist = path.join(PROJECT_ROOT, 'dist', 'client');
+if (fs.existsSync(clientDist)) {
+  app.use(express.static(clientDist));
   app.get(/^\/(?!api).*/, (_req: Request, res: Response) => {
-    res.sendFile(path.join(distPath, 'index.html'));
+    res.sendFile(path.join(clientDist, 'index.html'));
   });
 }
 
@@ -51,7 +52,7 @@ app.use('/api', (_req: Request, res: Response) => {
 
 app.listen(PORT, () => {
   console.log(`Finance dashboard API listening on http://localhost:${PORT}`);
-  console.log(`Database: ${process.env.DB_PATH || 'backend/app.db'}`);
+  console.log(`Database: ${DB_PATH}`);
 });
 
 export { app };

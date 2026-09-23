@@ -1,18 +1,40 @@
 {
-  "name": "budget-opencode",
+  "name": "ledgerly",
   "version": "1.0.0",
   "private": true,
-  "description": "Personal Finance Dashboard — Express + TypeScript + SQLite backend, React + Vite frontend. Local-only, no cloud.",
+  "description": "Ledgerly — personal finance dashboard. Express + TypeScript + SQLite API (server/) and React + Vite app (src/). Local-only, no cloud.",
   "scripts": {
-    "dev": "npm run dev:backend & npm run dev:frontend && wait",
-    "dev:backend": "npm --prefix backend run dev",
-    "dev:frontend": "npm --prefix frontend run dev",
-    "build": "npm run build:backend && npm run build:frontend",
-    "build:backend": "npm --prefix backend run build",
-    "build:frontend": "npm --prefix frontend run build",
-    "seed": "npm --prefix backend run seed",
-    "start": "npm --prefix backend run start",
-    "smoke": "npm --prefix frontend run build && npm --prefix frontend run smoke",
-    "typecheck": "npm --prefix backend run typecheck && npm --prefix frontend run typecheck"
+    "dev": "npm run dev:server & npm run dev:client && wait",
+    "dev:client": "vite",
+    "dev:server": "ts-node-dev --project tsconfig.server.json --respawn --transpile-only server/index.ts",
+    "build": "npm run build:server && npm run build:client",
+    "build:server": "tsc -p tsconfig.server.json",
+    "build:client": "vite build",
+    "seed": "ts-node --project tsconfig.server.json --transpile-only server/seed.ts",
+    "start": "node dist/server/index.js",
+    "preview": "vite preview",
+    "smoke": "npm run build:client && node scripts/smoke-test.mjs",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.server.json --noEmit"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^24.0.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "jsdom": "^30.1.1",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.5.0",
+    "vite": "^6.3.5"
   }
 }

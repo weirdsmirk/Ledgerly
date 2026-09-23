@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// The backend serves the built frontend in production, so set a stable base.
-// In dev, /api is proxied to the backend so the app always talks to its own
-// origin (no CORS, no hardcoded port) and survives backend restarts.
+// The server serves the built client in production, so set a stable base.
+// In dev, /api is proxied to the API server so the app always talks to its own
+// origin (no CORS, no hardcoded port) and survives server restarts.
 export default defineConfig({
   plugins: [react()],
   server: {
@@ -17,7 +17,8 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: 'dist',
+    outDir: 'dist/client',
+    emptyOutDir: true,
     sourcemap: false,
   },
 });

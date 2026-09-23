@@ -3,7 +3,7 @@ import { db, getUser } from '../db';
 
 export const settingsRouter = Router();
 
-/* Keep in sync with CURRENCIES in frontend/src/types.ts. */
+/* Keep in sync with CURRENCIES in src/types.ts. */
 const SUPPORTED_CURRENCIES = [
   'USD', 'EUR', 'GBP', 'JPY', 'CNY', 'CAD', 'AUD', 'INR', 'CHF',
   'SEK', 'NOK', 'DKK', 'NZD', 'SGD', 'MXN', 'BRL', 'ZAR', 'KRW',

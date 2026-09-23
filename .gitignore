@@ -5,6 +5,11 @@ node_modules/
 dist/
 *.tsbuildinfo
 
+# Local SQLite database (single file in the data folder at the project root)
+data/*.sqlite
+data/*.sqlite-wal
+data/*.sqlite-shm
+
 # Environment files (local overrides, e.g. PORT / DB_PATH / VITE_API_URL)
 .env
 .env.local

@@ -7,12 +7,26 @@ export type AccountType = 'checking' | 'savings' | 'credit_card' | 'cash' | 'inv
 export type BudgetPeriod = 'monthly' | 'quarterly' | 'yearly';
 export type RecurringPattern = 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly';
 
-const DATA_DIR = path.join(__dirname, '..');
-const DB_PATH = process.env.DB_PATH || path.join(DATA_DIR, 'app.db');
-
-if (!process.env.DB_PATH) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
+// Project root is the nearest ancestor directory that holds package.json.
+// Works whether this module runs from server/ (dev / ts-node) or
+// dist/server (compiled), so paths never depend on the build layout.
+export function findProjectRoot(from: string = __dirname): string {
+  let dir = from;
+  for (;;) {
+    if (fs.existsSync(path.join(dir, 'package.json'))) return dir;
+    const parent = path.dirname(dir);
+    if (parent === dir) throw new Error('Could not locate the project root (package.json)');
+    dir = parent;
+  }
 }
+
+export const PROJECT_ROOT = findProjectRoot();
+
+// Single SQLite database at the project root's data/ folder.
+export const DB_PATH =
+  process.env.DB_PATH || path.join(PROJECT_ROOT, 'data', 'database.sqlite');
+
+fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
 
 export const db = new DatabaseSync(DB_PATH);
 db.exec('PRAGMA journal_mode = WAL');
