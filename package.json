@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "Ledgerly — personal finance dashboard. Express + TypeScript + SQLite API (server/) and React + Vite app (src/). Local-only, no cloud.",
+  "engines": { "node": ">=22.5.0" },
   "scripts": {
     "dev": "npm run dev:server & npm run dev:client && wait",
     "dev:client": "vite",
