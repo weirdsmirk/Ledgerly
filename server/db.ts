@@ -29,7 +29,10 @@ export const DB_PATH =
 fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
 
 export const db = new DatabaseSync(DB_PATH);
-db.exec('PRAGMA journal_mode = WAL');
+// Rollback journal (the default) rather than WAL: keeps the database to a
+// single data/database.sqlite file — no -wal/-shm sidecars. Fine for this
+// single-connection, local, single-user app.
+db.exec('PRAGMA journal_mode = DELETE');
 db.exec('PRAGMA foreign_keys = ON');
 
 /* ------------------------------------------------------------------ */
