@@ -116,6 +116,8 @@ budgetsRouter.put('/:id', (req: Request, res: Response) => {
   }
   const category = db.prepare('SELECT id FROM categories WHERE id = ? AND user_id = ?').get(categoryId, userId);
   if (!category) return res.status(400).json({ error: 'Category not found' });
+  const normalizedStart = normalizeDate(String(startDate));
+  if (!normalizedStart) return res.status(400).json({ error: 'Start date must be a valid YYYY-MM-DD date' });
 
   db.prepare(
     `UPDATE budgets SET limit_amount = ?, alert_threshold = ?, period = ?, category_id = ?, start_date = ? WHERE id = ?`

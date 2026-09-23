@@ -377,6 +377,20 @@ transactionsRouter.put('/:id', (req: Request, res: Response) => {
   if (next.type !== 'income' && next.type !== 'expense') {
     return res.status(400).json({ error: 'Type must be income or expense' });
   }
+  // FK existence + enum integrity (mirrors POST so a hand-rolled update can't
+  // poison the tables and turn a client slip into a 500).
+  if (next.status !== 'cleared' && next.status !== 'pending') {
+    return res.status(400).json({ error: 'Status must be cleared or pending' });
+  }
+  if (next.description !== null && String(next.description).length > 2000) {
+    return res.status(400).json({ error: 'Description is too long (max 2000 characters)' });
+  }
+  const cat = db.prepare('SELECT id FROM categories WHERE id = ? AND user_id = ?').get(next.category_id, userId);
+  if (!cat) return res.status(400).json({ error: 'Category not found' });
+  if (next.goal_id) {
+    const goal = db.prepare('SELECT id FROM goals WHERE id = ? AND user_id = ?').get(next.goal_id, userId);
+    if (!goal) return res.status(400).json({ error: 'Goal not found' });
+  }
 
   db.prepare(
     `UPDATE transactions
