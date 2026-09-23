@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { db, getUser, isValidPeriod, getBudgetPeriodBounds, toDateKey } from '../db';
+import { db, getUser, isValidPeriod, getBudgetPeriodBounds, toDateKey, normalizeDate } from '../db';
 import type { BudgetPeriod } from '../db';
 
 export const budgetsRouter = Router();

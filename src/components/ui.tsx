@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, useId, type ReactNode } from 'react';
 import { useToasts } from '../hooks';
 import { Icon } from './icons';
 
@@ -19,7 +19,7 @@ export function ToastHost({ toasts }: { toasts: ReturnType<typeof useToasts>['to
   );
 }
 
-/* Modal */
+/* Modal — with focus trap, focus restore, scroll lock and aria wiring. */
 export function Modal({ open, onClose, title, kicker, children, wide }: {
   open: boolean;
   onClose: () => void;
@@ -28,21 +28,59 @@ export function Modal({ open, onClose, title, kicker, children, wide }: {
   children: ReactNode;
   wide?: boolean;
 }) {
+  const titleId = useId();
+  const dialogRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    const dialog = dialogRef.current;
+    const prevFocus = document.activeElement as HTMLElement | null;
+    const focusables = () =>
+      Array.from(dialog?.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      ) ?? []);
+
+    // Move focus into the dialog once it's mounted (after the paint so the
+    // element is guaranteed present).
+    requestAnimationFrame(() => {
+      const first = focusables()[0];
+      (first ?? dialog)?.focus();
+    });
+    prevFocus?.blur();
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { onClose(); return; }
+      if (e.key !== 'Tab' || !dialog) return;
+      const els = focusables();
+      if (els.length === 0) return;
+      const first = els[0], last = els[els.length - 1];
+      const active = document.activeElement;
+      if (e.shiftKey && (active === first || active === dialog || !dialog.contains(active))) {
+        e.preventDefault(); last.focus();
+      } else if (!e.shiftKey && (active === last || !dialog.contains(active))) {
+        e.preventDefault(); first.focus();
+      }
+    };
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+
+    // Lock body scroll while the modal is open.
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+      prevFocus?.focus?.();
+    };
   }, [open, onClose]);
 
   if (!open) return null;
   return (
     <div className="modal-backdrop" onMouseDown={onClose}>
-      <div className={`modal ${wide ? 'modal-wide' : ''}`} role="dialog" aria-modal="true" onMouseDown={(e) => e.stopPropagation()}>
+      <div ref={dialogRef} className={`modal ${wide ? 'modal-wide' : ''}`} role="dialog" aria-modal="true" aria-labelledby={titleId} onMouseDown={(e) => e.stopPropagation()}>
         <div className="modal-head">
           <div>
             {kicker && <div className="modal-kicker">{kicker}</div>}
-            <h2>{title}</h2>
+            <h2 id={titleId}>{title}</h2>
           </div>
           <button className="icon-btn" onClick={onClose} aria-label="Close" type="button">
             <Icon name="close" size={19} />
