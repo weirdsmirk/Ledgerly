@@ -10,7 +10,7 @@ export type RecurringPattern = 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'y
 // Project root is the nearest ancestor directory that holds package.json.
 // Works whether this module runs from server/ (dev / ts-node) or
 // dist/server (compiled), so paths never depend on the build layout.
-export function findProjectRoot(from: string = __dirname): string {
+function findProjectRoot(from: string = __dirname): string {
   let dir = from;
   for (;;) {
     if (fs.existsSync(path.join(dir, 'package.json'))) return dir;
@@ -178,8 +178,6 @@ seed();
 /* ------------------------------------------------------------------ */
 /* Shared helpers                                                      */
 /* ------------------------------------------------------------------ */
-
-export const DEFAULT_USER_ID = 1;
 
 export function getUser(): number {
   const row = db.prepare('SELECT id FROM users ORDER BY id LIMIT 1').get() as { id: number };

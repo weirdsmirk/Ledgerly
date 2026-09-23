@@ -85,7 +85,6 @@ ledgerly/
 │   ├── seed.ts        demo dataset
 │   └── routes/        transactions, accounts, budgets, goals, analytics…
 ├── src/               React client (pages, components, styles)
-├── public/            static assets (fonts)
 ├── scripts/           smoke test
 ├── data/              local SQLite data (gitignored, portable)
 │   └── database.sqlite

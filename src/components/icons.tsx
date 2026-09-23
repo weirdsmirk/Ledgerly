@@ -11,8 +11,6 @@ export type IconName =
   | 'plus'
   | 'search'
   | 'close'
-  | 'chevron-left'
-  | 'chevron-right'
   | 'check'
   | 'pencil'
   | 'trash'
@@ -21,9 +19,7 @@ export type IconName =
   | 'trend-up'
   | 'trend-down'
   | 'collapse'
-  | 'expand'
   | 'filter'
-  | 'calendar'
   | 'repeat'
   | 'upload'
   | 'download'
@@ -85,8 +81,6 @@ const PATHS: Record<IconName, ReactNode> = {
     </>
   ),
   close: <path d="M6 6l12 12M18 6 6 18" />,
-  'chevron-left': <path d="M14.5 6 8.5 12l6 6" />,
-  'chevron-right': <path d="M9.5 6 15.5 12l-6 6" />,
   check: <path d="M5 12.5l4.5 4.5L19 7" />,
   pencil: (
     <>
@@ -133,21 +127,9 @@ const PATHS: Record<IconName, ReactNode> = {
       <path d="M9.5 4v16M14.5 10.5 12 13l2.5 2.5" />
     </>
   ),
-  expand: (
-    <>
-      <rect x="3.5" y="4" width="17" height="16" rx="2" />
-      <path d="M9.5 4v16M14.5 10.5 17 13l-2.5 2.5" />
-    </>
-  ),
   filter: (
     <>
       <path d="M4 7h16M7 12h10M10 17h4" />
-    </>
-  ),
-  calendar: (
-    <>
-      <rect x="4" y="5" width="16" height="15" rx="2" />
-      <path d="M4 10h16M8 3v4M16 3v4" />
     </>
   ),
   repeat: (
