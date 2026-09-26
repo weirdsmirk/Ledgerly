@@ -5,10 +5,23 @@ node_modules/
 dist/
 *.tsbuildinfo
 
-# Local SQLite database (single file in the data folder at the project root)
-data/*.sqlite
-data/*.sqlite-wal
-data/*.sqlite-shm
+# Local database and user data — NEVER commit this.
+# data/ is the app's only automatic write location (see DB_PATH in server/db.ts),
+# but DB_PATH is configurable, so stray databases are also matched by name
+# anywhere in the tree.
+#
+# Sidecars: server/db.ts sets journal_mode=DELETE, so the live sidecar is
+# -journal, not -wal/-shm. A hot journal holds raw copies of recently modified
+# database pages, so it leaks just as much as the database itself.
+data/
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite3
+*.sqlite3-journal
+*.db
+*.db-journal
 
 # Environment files (local overrides, e.g. PORT / DB_PATH / VITE_API_URL)
 .env
