@@ -39,3 +39,7 @@ scripts/  smoke test
 data/     local SQLite database (gitignored)
 dist/     build output (gitignored)
 ```
+
+## License
+
+[MIT](LICENSE) © 2026 Armaan Verma

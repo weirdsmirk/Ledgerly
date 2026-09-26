@@ -2,7 +2,16 @@
   "name": "ledgerly",
   "version": "1.0.0",
   "private": true,
+  "license": "MIT",
   "description": "Ledgerly — personal finance dashboard. Express + TypeScript + SQLite API (server/) and React + Vite app (src/). Local-only, no cloud.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weirdsmirk/Ledgerly.git"
+  },
+  "homepage": "https://github.com/weirdsmirk/Ledgerly#readme",
+  "bugs": {
+    "url": "https://github.com/weirdsmirk/Ledgerly/issues"
+  },
   "engines": { "node": ">=22.5.0" },
   "scripts": {
     "dev": "npm run dev:server & npm run dev:client && wait",
